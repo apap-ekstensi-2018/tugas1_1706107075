@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title th:replace="fragments/header :: header(title=${title})"></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+	<div th:replace="fragments/header :: nav"></div>
+	<h1 class="page-header">Sistem Informasi Kemahasiswaan</h1>
+	<h6>Selamat datang di Sistem Informasi Kemahasiswaan</h6>
+	<hr/>
+	<h3>Lihat Data Mahasiswa Berdasarkan NPM</h3>
+	<h6>Masukkan Nomor Pokok Mahasiswa</h6>
+	
+	<form action="/mahasiswa" method="get">
+		<div>
+			<label for="npm">NPM</label> <input type="text" name="npm" />
+		</div>
+
+		<div>
+			<button type="submit">Lihat</button>
+		</div>
+	</form>
+
+</body>
+
+</html>
+

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="com.example.dao.ProgramStudiMapper"/>
+<fullyQualifiedTypeName name="com.example.dao.FakultasMapper"/>
+<fullyQualifiedTypeName name="com.example.dao.UniversitasMapper"/>
+<fullyQualifiedTypeName name="com.example.model.UniversitasModel"/>
+<fullyQualifiedTypeName name="com.example.model.FakultasModel"/>
+<fullyQualifiedTypeName name="com.example.service.UniversitasService"/>
+<fullyQualifiedTypeName name="com.example.service.FakultasService"/>
+<fullyQualifiedTypeName name="com.example.model.MahasiswaModel"/>
+<fullyQualifiedTypeName name="org.apache.ibatis.annotations.Insert"/>
+<fullyQualifiedTypeName name="com.example.service.ProgramStudiService"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="com.example.model.ProgramStudiModel"/>
+<fullyQualifiedTypeName name="java.util.Random"/>
+</qualifiedTypeNameHistroy>
