@@ -52,7 +52,7 @@ public class MahasiswaController
             return "view";
         } else {
             model.addAttribute ("title","Gagal Cari");
-            model.addAttribute ("status", "Mahasiswa Tidak Ditemukan");
+            model.addAttribute ("status", "Gagal!");
             model.addAttribute ("message", "Mahasiswa dengan NPM " + npm + " Tidak Ditemukan");
             return "notif";
         }
