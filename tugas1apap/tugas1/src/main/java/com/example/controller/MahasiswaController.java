@@ -1,18 +1,22 @@
 package com.example.controller;
 
 import java.util.List;
-import java.util.Random;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.model.UniversitasModel;
+import com.example.model.FakultasModel;
 import com.example.model.MahasiswaModel;
 import com.example.model.ProgramStudiModel;
+import com.example.service.FakultasService;
 import com.example.service.MahasiswaService;
 import com.example.service.ProgramStudiService;
+import com.example.service.UniversitasService;
 
 @Controller
 public class MahasiswaController
@@ -22,6 +26,12 @@ public class MahasiswaController
     
     @Autowired
     ProgramStudiService programStudiDAO;
+    
+    @Autowired
+    FakultasService fakultasDAO;
+    
+    @Autowired
+    UniversitasService universitasDAO;
 
 
     @RequestMapping("/")
@@ -35,15 +45,16 @@ public class MahasiswaController
     public String view (Model model,
             @RequestParam(value = "npm", required = false) String npm)
     {
-        MahasiswaModel student = mahasiswaDAO.selectMahasiswa (npm);
-        if (student != null) {
-            model.addAttribute ("student", student);
+        MahasiswaModel mahasiswa = mahasiswaDAO.selectMahasiswa (npm);
+        if (mahasiswa != null) {
             model.addAttribute ("title","Lihat Mahasiswa By NPM");
+            model.addAttribute ("mahasiswa", mahasiswa);
             return "view";
         } else {
-            model.addAttribute ("npm", npm);
-            model.addAttribute ("title","Mahasiswa Tidak Ditemukan");
-            return "not-found";
+            model.addAttribute ("title","Gagal Cari");
+            model.addAttribute ("status", "Mahasiswa Tidak Ditemukan");
+            model.addAttribute ("message", "Mahasiswa dengan NPM " + npm + " Tidak Ditemukan");
+            return "notif";
         }
     }
 
@@ -52,93 +63,43 @@ public class MahasiswaController
     {
     		List<ProgramStudiModel> listProdi = programStudiDAO.selectAllProgramStudi();
     		model.addAttribute("title", "Tambah Mahasiswa");
+    		model.addAttribute("mahasiswa", new MahasiswaModel());
+    		model.addAttribute("listJenisKelamin", MahasiswaModel.LIST_JENIS_KELAMIN);
+    		model.addAttribute("listAgama", MahasiswaModel.LIST_AGAMA);
+    		model.addAttribute("listGolonganDarah", MahasiswaModel.LIST_GOLONGAN_DARAH);
+    		model.addAttribute("listJalurMasuk", MahasiswaModel.LIST_JALUR_MASUK);
     		model.addAttribute("listProdi", listProdi);
         return "form-add";
     }
 
-    @RequestMapping(value="/mahasiswa/tambah/submit")
-    public String addSubmit(
-            @RequestParam(value = "nama", required = false) String nama,
-            @RequestParam(value = "tempat_lahir", required = false) String tempat_lahir,
-            @RequestParam(value = "tanggal_lahir", required = false) String tanggal_lahir,
-            @RequestParam(value = "jenis_kelamin", required = false) int jenis_kelamin,
-            @RequestParam(value = "agama", required = false) String agama,
-            @RequestParam(value = "golongan_darah", required = false) String golongan_darah,
-            @RequestParam(value = "tahun_masuk", required = false) String tahun_masuk,
-            @RequestParam(value = "jalur_masuk", required = false) String jalur_masuk,
-            @RequestParam(value = "id_prodi", required = false) int id_prodi)
+    @RequestMapping(value="/mahasiswa/tambah", method=RequestMethod.POST)
+    public String addSubmit(Model model, @ModelAttribute MahasiswaModel mahasiswa)
     {
-    		String jalur="";
-    		if(jalur_masuk.equals("Undangan Olimpiade"))
-    			jalur="53";
-    		else if(jalur_masuk.equals("Undangan Reguler/SNMPTN"))
-    			jalur="54";
-    		else if(jalur_masuk.equals("Undangan Paralel/PPKB"))
-    			jalur="55";
-    		else if(jalur_masuk.equals("Ujian Tulis Bersama/SBMPTN"))
-    			jalur="56";
-    		else if(jalur_masuk.equals("Ujian Tulis Mandiri"))
-    			jalur="62";
+    		mahasiswa.setProgram_studi(programStudiDAO.selectProgramStudi(mahasiswa.getId_prodi()));
+    		FakultasModel fakultas = fakultasDAO.selectFakultas(mahasiswa.getProgram_studi().getId_fakultas());
+    		UniversitasModel univ = universitasDAO.selectUniversitas(fakultas.getId_univ());
+    		mahasiswa.setStatus("Aktif");
     		
-    		Random rand = new Random();
-    		int randNum = rand.nextInt((999-100)+1)+100;
-    		String npm = tahun_masuk.substring(tahun_masuk.length()-2, tahun_masuk.length()) + 
-			String.valueOf(programStudiDAO.selectProgramStudi(id_prodi).getFakultas().getUniversitas().getKode_univ()) +
-    			String.valueOf(programStudiDAO.selectProgramStudi(id_prodi).getKode_prodi()) + jalur + String.format("%03d",randNum);
+    		int i=1;
+    		String npm = mahasiswa.generateNPM(univ.getKode_univ(), String.format("%03d",i));
+    		while(mahasiswaDAO.selectMahasiswa(npm) != null) {
+    			i = i+1;
+    			npm = mahasiswa.generateNPM(univ.getKode_univ(), String.format("%03d",i));
+    		}
+    		mahasiswa.setNpm(npm);
     		
-    		MahasiswaModel mhs = new MahasiswaModel (npm,nama, tempat_lahir, tanggal_lahir,jenis_kelamin,
-    				agama,golongan_darah,tahun_masuk,jalur_masuk,id_prodi);
-    		mahasiswaDAO.addMahasiswa(mhs);
-    		return "success-add";
+    		mahasiswaDAO.addMahasiswa(mahasiswa);
+    		
+    		if (mahasiswaDAO.selectMahasiswa(mahasiswa.getNpm()) != null) {
+    			model.addAttribute ("title","Berhasil Tambah");
+            model.addAttribute ("status", "Sukses!");
+            model.addAttribute ("message", "Mahasiswa dengan NPM " + mahasiswa.getNpm() + " berhasil ditambahkan");
+        } else {
+            model.addAttribute ("title","Gagal Tambah");
+            model.addAttribute ("status", "Gagal!");
+            model.addAttribute("message", "Mahasiswa dengan NPM " + mahasiswa.getNpm() + " gagal ditambahkan");
+        }
+    		return "notif";
     }
-
-//    @RequestMapping("/student/viewall")
-//    public String view (Model model)
-//    {
-//        List<MahasiswaModel> students = studentDAO.selectAllStudents ();
-//        model.addAttribute ("students", students);
-//        model.addAttribute("title", "View All Student");
-//        return "viewall";
-//    }
-//
-//
-//    @RequestMapping("/student/delete/{npm}")
-//    public String delete (Model model, @PathVariable(value = "npm") String npm)
-//    {
-//    		MahasiswaModel student = studentDAO.selectStudent (npm);
-//
-//        if (student != null) {
-//            studentDAO.deleteStudent (npm);
-//            model.addAttribute("title", "Delete");
-//            return "delete";
-//        } else {
-//            model.addAttribute ("npm", npm);
-//            model.addAttribute ("title","Student Not Found");
-//            return "not-found";
-//        }
-//    }
-//    
-//    @RequestMapping("/student/update/{npm}")
-//    public String updatePath (Model model,
-//            @PathVariable(value = "npm") String npm)
-//    {
-//        MahasiswaModel student = studentDAO.selectStudent (npm);
-//
-//        if (student != null) {
-//            model.addAttribute ("student", student);
-//            model.addAttribute("title", "Update Student");
-//            return "form-update";
-//        } else {
-//            model.addAttribute ("npm", npm);
-//            model.addAttribute ("title","Student Not Found");
-//            return "not-found";
-//        }
-//    }
-//    
-//    @RequestMapping(value="/student/update/submit", method= RequestMethod.POST)
-//    public String updateSubmit(@ModelAttribute MahasiswaModel student) {
-//    		studentDAO.updateStudent (student);
-//    		return "success-update";
-//    }
 
 }

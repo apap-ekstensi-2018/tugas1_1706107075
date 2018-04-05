@@ -5,7 +5,7 @@
     </head>
     <body>
     		<div th:replace="fragments/header :: nav"></div>
-    		<h1>Student not found</h1>
-       	<h3 th:text="'NPM = ' + ${npm}">Student NPM</h3>
+    		<h3 th:text="${status}">Status</h3>
+       	<h5 th:text="${message}">Pesan</h5>
     </body>
 </html>

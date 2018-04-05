@@ -18,7 +18,7 @@ public interface MahasiswaMapper
     MahasiswaModel selectMahasiswa (@Param("npm") String npm);
     
     @Insert("INSERT INTO mahasiswa (npm, nama, tempat_lahir, tanggal_lahir,jenis_kelamin, " 
-    		+ "agama, golongan_darah, tahun_masuk, jalur_masuk, id_prodi "
+    		+ "agama, golongan_darah, tahun_masuk, jalur_masuk, id_prodi) "
     		+ "VALUES (#{npm}, #{nama}, #{tempat_lahir}, #{tanggal_lahir}, #{jenis_kelamin}, "
     		+ "#{agama}, #{golongan_darah}, #{tahun_masuk}, #{jalur_masuk}, #{id_prodi})")
     void addMahasiswa (MahasiswaModel mahasiswa);
