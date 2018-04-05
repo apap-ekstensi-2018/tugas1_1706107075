@@ -24,11 +24,27 @@ public class MahasiswaServiceDatabase implements MahasiswaService
 		}
 		return mhs;
 	}
+	
+	@Override
+	public MahasiswaModel selectMahasiswaById(int id) {
+		// TODO Auto-generated method stub
+		MahasiswaModel mhs = mahasiswaMapper.selectMahasiswaById(id);
+		if(mhs!=null) {
+			mhs.setProgram_studi(prodiService.selectProgramStudi(mhs.getId_prodi()));
+		}
+		return mhs;
+	}
 
 	@Override
 	public void addMahasiswa(MahasiswaModel mahasiswa) {
 		// TODO Auto-generated method stub
 		mahasiswaMapper.addMahasiswa(mahasiswa);
+	}
+
+	@Override
+	public void updateMahasiswa(MahasiswaModel mahasiswa) {
+		// TODO Auto-generated method stub
+		mahasiswaMapper.updateMahasiswa(mahasiswa);
 	}
 
 }

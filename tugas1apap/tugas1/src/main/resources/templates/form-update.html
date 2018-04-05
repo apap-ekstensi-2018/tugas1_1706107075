@@ -8,27 +8,106 @@
 
 <body>
 	<div th:replace="fragments/header :: nav"></div>
-	<h1 class="page-header">Edit Student</h1>
+	<div class="col-sm-4">
+		<h3 class="page-header">Ubah Mahasiswa</h3>
+	</div>
+	<div>
+		<form action="/mahasiswa/ubah/submit" method="post" th:object="${mahasiswa}">
+			<input type="text" name="id" th:field="*{id}" hidden="true"/>
+			<div>
+				<div class="col-sm-3">
+					<label for="nama">Nama Lengkap</label> 
+				</div>
+				<div class="col-sm-3">
+					<input type="text" name="nama" th:field="*{nama}"/>
+				</div>
+			</div>
+	
+			<div>
+				<div class="col-sm-3">
+					<label for="tempat_lahir">Tempat Lahir</label> 
+				</div>
+				<div class="col-sm-3">
+					<input type="text" name="tempat_lahir" th:field="*{tempat_lahir}"/>
+				</div>
+			</div>
+			
+			<div>
+				<div class="col-sm-3">
+					<label for="tanggal_lahir">Tanggal Lahir</label> 
+				</div>
+				<div class="col-sm-3">
+					<input type="text" name="tanggal_lahir" th:field="*{tanggal_lahir}"/>
+				</div>
+			</div>
+			
+			<div>
+				<div class="col-sm-3">
+					<label for="jenis_kelamin">Jenis Kelamin</label> 
+				</div>
+				<div class="col-sm-3">
+					<select id="jenis_kelamin" name="jenis_kelamin" th:field="*{jenis_kelamin}">
+						<option th:each="jk, i : ${listJenisKelamin}" th:attr="selected=(*{jenis_kelamin}==${jk})" th:value="${i.index}" th:text="${jk}"></option>
+					</select>
+				</div>
+			</div>
+			
+			<div>
+				<div class="col-sm-3">
+					<label for="agama">Agama</label> 
+				</div>
+				<div class="col-sm-3">
+					<select id="agama" name="agama" th:field="*{agama}">
+						<option th:each="agama : ${listAgama}" th:attr="selected=(*{agama}==${agama})" th:value="${agama}" th:text="${agama}"></option>
+					</select>
+				</div>
+			</div>
+			
+			<div>
+				<div class="col-sm-3">
+					<label for="golongan_darah">Golongan Darah</label> 
+				</div>
+				<div class="col-sm-3">
+					<select id="golongan_darah" name="golongan_darah" th:field="*{golongan_darah}">
+						<option th:each="goldar : ${listGolonganDarah}" th:attr="selected=(*{golongan_darah}==${goldar})" th:value="${goldar}" th:text="${goldar}"></option>
+					</select>
+				</div>
+			</div>
 
-	<form action="/student/update/submit" method="post" th:object="${student}">
-		<div>
-			<label for="npm">NPM</label> 
-			<input type="text" name="npm" readonly="true" th:value="${student.getNpm()}" th:field="*{npm}"/>
-		</div>
-		<div>
-			<label for="name">Name</label> 
-			<input type="text" name="name" th:value="${student.getName()}" th:field="*{name}"/>
-		</div>
-		<div>
-			<label for="gpa">GPA</label> 
-			<input type="text" name="gpa" th:value="${student.getGpa()}" th:field="*{gpa}"/>
-		</div>
-
-		<div>
-			<button type="submit" name="action" value="update">Update</button>
-		</div>
-	</form>
-
+			<div>
+				<div class="col-sm-3">
+					<label for="tahun_masuk">Tahun Masuk</label> 
+				</div>
+				<div class="col-sm-3">
+					<input type="text" name="tahun_masuk" th:field="*{tahun_masuk}"/>
+				</div>
+			</div>
+			
+			<div>
+				<div class="col-sm-3">
+					<label for="jalur_masuk">Jalur Masuk</label> 
+				</div>
+				<div class="col-sm-3">
+					<select id="jalur_masuk" name="jalur_masuk" th:field="*{jalur_masuk}">
+						<option th:each="jalur : ${listJalurMasuk}" th:attr="selected=(*{jalur_masuk}==${jalur})" th:value="${jalur}" th:text="${jalur}"></option>
+					</select>
+				</div>
+			</div>
+			
+			<div>
+				<div class="col-sm-3">
+					<label for="id_prodi">Program Studi</label> 
+				</div> 
+				<div class="col-sm-3">
+					<input type="text" name="id_prodi" th:field="*{id_prodi}"/>
+				</div>
+			</div>
+			
+			<div class="col-sm-3">
+				<button type="submit">Simpan</button>
+			</div>
+		</form>
+	</div>
 </body>
 
 </html>
