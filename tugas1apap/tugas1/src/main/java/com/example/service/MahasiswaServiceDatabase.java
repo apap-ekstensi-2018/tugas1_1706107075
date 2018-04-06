@@ -1,10 +1,14 @@
 package com.example.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.dao.MahasiswaMapper;
 import com.example.model.MahasiswaModel;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 
 @Service
 public class MahasiswaServiceDatabase implements MahasiswaService
@@ -45,6 +49,18 @@ public class MahasiswaServiceDatabase implements MahasiswaService
 	public void updateMahasiswa(MahasiswaModel mahasiswa) {
 		// TODO Auto-generated method stub
 		mahasiswaMapper.updateMahasiswa(mahasiswa);
+	}
+
+	@Override
+	public List<MahasiswaModel> getMahasiswaLulus(String tahun, int id_prodi) {
+		// TODO Auto-generated method stub
+		return mahasiswaMapper.getMahasiswaLulus(tahun, id_prodi);
+	}
+
+	@Override
+	public List<MahasiswaModel> getTotalMahasiswa (String tahun, int id_prodi) {
+		// TODO Auto-generated method stub
+		return mahasiswaMapper.getTotalMahasiswa(tahun, id_prodi);
 	}
 
 }

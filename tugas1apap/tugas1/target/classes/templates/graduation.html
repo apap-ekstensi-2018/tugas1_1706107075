@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title th:replace="fragments/header :: header(title=${title})"></title>
+    </head>
+    <body>
+    		<div th:replace="fragments/header :: nav"></div>
+       	<h3 th:text="'Presentase Kelulusan'"></h3>
+       	<table id="table-student" class="display">
+     		<thead>
+     			<tr>
+     				<th></th>
+     				<th></th>
+     				<th></th>
+     				<th></th>
+     			</tr>
+     		</thead>
+     		<tbody>
+     			<tr>
+     				<td th:text="Tahun">Year</td>
+     				<td>:</td>
+     				<td th:text="${tahun}">Year</td>
+     				<td th:text="${presentasi} + ' %'"></td>
+     			</tr>
+     			<tr>
+     				<td th:text="'Program Studi'">Program Studi</td>
+     				<td>:</td>
+     				<td th:text="${prodi}">Student Prodi</td>
+     				<td rowspan="2" th:text="${message}"></td>
+     			</tr>
+     			<tr>
+     				<td th:text="Fakultas">Faculty</td>
+     				<td>:</td>
+     				<td th:text="${fakultas}">Student Faculty</td>
+     			</tr>
+     			<tr>
+     				<td th:text="Universitas">University</td>
+     				<td>:</td>
+     				<td th:text="${univ}">Student University</td>
+     			</tr>
+     			
+     		</tbody>
+     	</table>
+    </body>
+</html>
+

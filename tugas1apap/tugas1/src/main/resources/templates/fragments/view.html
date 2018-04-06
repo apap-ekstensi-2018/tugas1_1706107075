@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title th:replace="fragments/header :: header(title=${title})"></title>
+    </head>
+    <body>
+    		<div th:replace="fragments/header :: nav"></div>
+       	<h3 th:text="'Lihat Data Mahasiswa - ' + ${mahasiswa.getNpm()}">Student NPM</h3>
+       	<table id="table-student" class="display">
+     		<thead>
+     			<tr>
+     				<th></th>
+     				<th></th>
+     				<th></th>
+     			</tr>
+     		</thead>
+     		<tbody>
+     			<tr>
+     				<td th:text="NPM">NPM</td>
+     				<td>:</td>
+     				<td th:text="${mahasiswa.getNpm()}">Student NPM</td>
+     			</tr>
+     			<tr>
+     				<td th:text="Nama">Name</td>
+     				<td>:</td>
+     				<td th:text="${mahasiswa.getNama()}">Student Name</td>
+     			</tr>
+     			<tr>
+     				<td th:text="'Tempat/Tanggal Lahir'">Birth place/date</td>
+     				<td>:</td>
+     				<td th:text="${mahasiswa.getTempat_lahir()}+' '+${mahasiswa.getTanggal_lahir()}">Student Birthdate</td>
+     			</tr>
+     			<tr>
+     				<td th:text="'Program Studi'">Program Studi</td>
+     				<td>:</td>
+     				<td th:text="${mahasiswa.getProgram_studi().getNama_prodi()}">Student Prodi</td>
+     			</tr>
+     			<tr>
+     				<td th:text="Fakultas">Faculty</td>
+     				<td>:</td>
+     				<td th:text="${mahasiswa.getProgram_studi().getFakultas().getNama_fakultas()}">Student Faculty</td>
+     			</tr>
+     			<tr>
+     				<td th:text="Universitas">University</td>
+     				<td>:</td>
+     				<td th:text="${mahasiswa.getProgram_studi().getFakultas().getUniversitas().getNama_univ()}">Student Faculty</td>
+     			</tr>
+     			<tr>
+     				<td th:text="'Jenis Kelamin'">Sex</td>
+     				<td>:</td>
+     				<td th:text="${mahasiswa.getJenis_kelamin()==0} ? 'Laki-Laki' : 'Perempuan'">Student Sex</td>
+     			</tr>
+     			<tr>
+     				<td th:text="Agama">Religion</td>
+     				<td>:</td>
+     				<td th:text="${mahasiswa.getAgama()}">Student Faculty</td>
+     			</tr>
+     			<tr>
+     				<td th:text="'Golongan Darah'">Blood Type</td>
+     				<td>:</td>
+     				<td th:text="${mahasiswa.getGolongan_darah()}">Student Blood Type</td>
+     			</tr>
+     			<tr>
+     				<td th:text="'Tahun Masuk'">Year</td>
+     				<td>:</td>
+     				<td th:text="${mahasiswa.getTahun_masuk()}">Student Year</td>
+     			</tr>
+     			<tr>
+     				<td th:text="'Jalur Masuk'">Channel</td>
+     				<td>:</td>
+     				<td th:text="${mahasiswa.getJalur_masuk()}">Student Channel</td>
+     			</tr>
+     			<tr>
+     				<td th:text="Status">Status</td>
+     				<td>:</td>
+     				<td th:text="${mahasiswa.getStatus()}">Student Status</td>
+     			</tr>
+     		</tbody>
+     	</table>
+    </body>
+</html>
+
